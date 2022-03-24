@@ -86,12 +86,12 @@ function renderBoard(board) {
             var cell = board[i][j];
             var className = (cell.isMine) ? 'hidden-bomb' : ''
 
-            var x = (cell.isMine) ? BOMB : ''
-            strHTML += `\t<td class="${className}"  data-i="${i}" data-j="${j}" oncontextmenu="cellMarked(this, ${i}, ${j})"
-             onclick="cellClicked(this, ${i}, ${j})"  >${x}</td>\n`
-
+            // var x = (cell.isMine) ? BOMB : ''
             // strHTML += `\t<td class="${className}"  data-i="${i}" data-j="${j}" oncontextmenu="cellMarked(this, ${i}, ${j})"
-            //  onclick="cellClicked(this, ${i}, ${j})"  ></td>\n`
+            //  onclick="cellClicked(this, ${i}, ${j})"  >${x}</td>\n`
+
+            strHTML += `\t<td class="${className}"  data-i="${i}" data-j="${j}" oncontextmenu="cellMarked(this, ${i}, ${j})"
+             onclick="cellClicked(this, ${i}, ${j})"  ></td>\n`
         }
         strHTML += `</tr>\n`
     }
