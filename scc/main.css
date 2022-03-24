@@ -1,0 +1,84 @@
+/* * {
+    box-sizing: border-box;
+} */
+
+body {
+    text-align: center;
+    background-image: url(../img/istockphoto-121373476-170667a.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.stopwatch {
+    /* display: inline-block; */
+    margin-top: 50px;
+    margin-left: 50%;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5%;
+    width: 70px;
+    background-color: rgba(179, 128, 17, 0.795);
+    font-size: 25px;
+    transform: translate(-50%, -55%);
+}
+
+.game {
+    margin: auto;
+    padding: 10px;
+    background-color: rgba(214, 214, 214, 0.747);
+}
+
+.board {
+    inline-size: auto;
+}
+
+.board td {
+    width: 22px;
+    height: 22px;
+    transition: 0.2s;
+}
+
+.board td:hover {
+    background-color: rgba(252, 217, 203, 0.452);
+    cursor: pointer;
+}
+
+.is-shown {
+    background: linear-gradient(to top, rgb(172, 171, 171), rgb(255, 252, 247));
+    outline: 2px solid rgba(0, 0, 0, 0.068);
+}
+
+.explosion {
+    background: linear-gradient(rgba(179, 4, 4, 0.705), rgba(255, 187, 0, 0.623), rgba(179, 4, 4, 0.671));
+    outline: 2px solid rgba(0, 0, 0, 0.068);
+}
+
+button {
+    margin: 8px;
+    border-radius: 10%;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: medium;
+}
+
+button:hover {
+    background-color: rgb(168, 168, 168);
+    outline: 2px solid rgba(0, 0, 0, 0.267);
+    cursor: pointer;
+}
+
+.btn-container {
+    margin-top: 10px;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(197, 197, 197, 0.664);
+    color: white;
+}
