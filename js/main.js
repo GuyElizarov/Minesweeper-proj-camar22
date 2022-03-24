@@ -25,7 +25,7 @@ function initGame() {
     setBombsRandomly(gBoard, gLevel.MINES)
     setMinesNegsCount(gBoard)
     renderBoard(gBoard)
-    renderDifficulty()
+    renderLevelsBtns()
     gGame.isOn = true
     console.log('gBoard', gBoard)
 
@@ -86,12 +86,12 @@ function renderBoard(board) {
             var cell = board[i][j];
             var className = (cell.isMine) ? 'hidden-bomb' : ''
 
-            // var x = (cell.isMine) ? BOMB : ''
-            // strHTML += `\t<td class="${className}"  data-i="${i}" data-j="${j}" oncontextmenu="cellMarked(this, ${i}, ${j})"
-            //  onclick="cellClicked(this, ${i}, ${j})"  >${x}</td>\n`
-
+            var x = (cell.isMine) ? BOMB : ''
             strHTML += `\t<td class="${className}"  data-i="${i}" data-j="${j}" oncontextmenu="cellMarked(this, ${i}, ${j})"
-             onclick="cellClicked(this, ${i}, ${j})"  ></td>\n`
+             onclick="cellClicked(this, ${i}, ${j})"  >${x}</td>\n`
+
+            // strHTML += `\t<td class="${className}"  data-i="${i}" data-j="${j}" oncontextmenu="cellMarked(this, ${i}, ${j})"
+            //  onclick="cellClicked(this, ${i}, ${j})"  ></td>\n`
         }
         strHTML += `</tr>\n`
     }
@@ -100,6 +100,12 @@ function renderBoard(board) {
 }
 
 function cellClicked(elCell, i, j) {
+
+    // if (!gGame.isOn) {
+    //     setBombsRandomly(gBoard, gLevel.MINES)
+    //     setMinesNegsCount(gBoard)
+    //     gGame.isOn = true
+    // }
 
     if (gGame.isOn) {
 
@@ -136,6 +142,12 @@ function cellClicked(elCell, i, j) {
 }
 
 function cellMarked(elCell, i, j) {
+
+    // if (!gGame.isOn) {
+    //     setBombsRandomly(gBoard, gLevel.MINES)
+    //     setMinesNegsCount(gBoard)
+    //     gGame.isOn = true
+    // }
 
     if (gGame.isOn) {
 
@@ -189,11 +201,6 @@ function getEmptyCell(board) {
 }
 
 function revealAllMines() {
-    // var elCells = document.querySelectorAll('.bomb')
-    // console.log(elCells);
-    // for (var i = 0; i < elcells.length; i++) {
-    //     elCells[i].innerText = BOMB
-    // }
     for (var i = 0; i < gLevel.MINES; i++) {
         var elCell = document.querySelector('.hidden-bomb')
         elCell.innerText = BOMB
@@ -233,17 +240,17 @@ function expandShown(cellI, cellJ) {
 }
 
 
-function renderDifficulty() {
+function renderLevelsBtns() {
     var strHTML = ''
     var opts = ['Beginner', 'Medium', 'Expert']
     for (var i = 0; i < opts.length; i++) {
-        strHTML += `<button onclick="changeDifficulty('${opts[i]}')">${opts[i]}</button>`
+        strHTML += `<button onclick="changeLevel('${opts[i]}')">${opts[i]}</button>`
     }
     var elBtnContainer = document.querySelector('.btn-container')
     elBtnContainer.innerHTML = strHTML
 }
 
-function changeDifficulty(levelStr) {
+function changeLevel(levelStr) {
     switch (levelStr) {
         case 'Beginner':
             gLevel = {
