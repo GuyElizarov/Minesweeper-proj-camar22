@@ -3,8 +3,9 @@
 const BOMB = '💣'
 const FLAG = '🚩'
 const NORMAL = '😃'
-const LOST = '�'
-const WIN = '�'
+const LOST = '🤯'
+const WIN = '😎'
+const LIVE = '❤️'
 
 var gBoard
 
@@ -13,17 +14,11 @@ var gLevel = {
     MINES: 2
 };
 
-var gGame = {
-    isOn: false,
-    shownCount: 0,
-    markedCount: 0,
-    secsPassed: 0
-}
+var gGame
 
 function initGame() {
+    reset()
     gBoard = buildBoard()
-    setBombsRandomly(gBoard, gLevel.MINES)
-    setMinesNegsCount(gBoard)
     renderBoard(gBoard)
     renderLevelsBtns()
     gGame.isOn = true
@@ -42,7 +37,8 @@ function buildBoard() {
                 minesAroundCount: null,
                 isShown: false,
                 isMine: false,
-                isMarked: false
+                isMarked: false,
+                coords: { i, j }
             }
             board[i][j] = cell
         }
@@ -83,15 +79,8 @@ function renderBoard(board) {
     for (var i = 0; i < board.length; i++) {
         strHTML += `<tr>\n`
         for (var j = 0; j < board[0].length; j++) {
-            var cell = board[i][j];
-            var className = (cell.isMine) ? 'hidden-bomb' : ''
-
-            // var x = (cell.isMine) ? BOMB : ''
-            // strHTML += `\t<td class="${className}"  data-i="${i}" data-j="${j}" oncontextmenu="cellMarked(this, ${i}, ${j})"
-            //  onclick="cellClicked(this, ${i}, ${j})"  >${x}</td>\n`
-
-            strHTML += `\t<td class="${className}"  data-i="${i}" data-j="${j}" oncontextmenu="cellMarked(this, ${i}, ${j})"
-             onclick="cellClicked(this, ${i}, ${j})"  ></td>\n`
+            strHTML += `\t<td  data-i="${i}" data-j="${j}" oncontextmenu="cellMarked(this, ${i}, ${j})"
+            onclick="cellClicked(this, ${i}, ${j})"  ></td>\n`
         }
         strHTML += `</tr>\n`
     }
@@ -101,11 +90,11 @@ function renderBoard(board) {
 
 function cellClicked(elCell, i, j) {
 
-    // if (!gGame.isOn) {
-    //     setBombsRandomly(gBoard, gLevel.MINES)
-    //     setMinesNegsCount(gBoard)
-    //     gGame.isOn = true
-    // }
+    if (gGame.isFirstClick) {
+        setBombsRandomly(gBoard, gLevel.MINES, i, j)
+        setMinesNegsCount(gBoard)
+        gGame.isFirstClick = false
+    }
 
     if (gGame.isOn) {
 
@@ -116,10 +105,13 @@ function cellClicked(elCell, i, j) {
         if (cell.isMarked) return
         if (cell.isShown) return
 
-        if (cell.isMine) {
+        if (cell.isMine && !gGame.liveCount) {
             stopTimer()
             revealAllMines()
             gGame.isOn = false
+        } else if (cell.isMine) {
+            elCell.innerHTML = BOMB
+            decreaseFife()
         }
 
         if (cell.minesAroundCount) {
@@ -136,18 +128,19 @@ function cellClicked(elCell, i, j) {
             expandShown(i, j)
         }
 
-        console.log('shownCount', gGame.shownCount);
         checkGameOver()
     }
 }
 
 function cellMarked(elCell, i, j) {
 
-    // if (!gGame.isOn) {
-    //     setBombsRandomly(gBoard, gLevel.MINES)
-    //     setMinesNegsCount(gBoard)
-    //     gGame.isOn = true
-    // }
+    if (gGame.isFirstClick) {
+
+        console.log('heloo');
+        setBombsRandomly(gBoard, gLevel.MINES, i, j)
+        setMinesNegsCount(gBoard)
+        gGame.isFirstClick = false
+    }
 
     if (gGame.isOn) {
 
@@ -164,7 +157,6 @@ function cellMarked(elCell, i, j) {
             cell.isMarked = false
             gGame.markedCount--
         }
-        console.log('markedCount', gGame.markedCount);
         checkGameOver()
     }
 }
@@ -176,15 +168,22 @@ function checkGameOver() {
         stopTimer()
         gGame.isOn = false
         console.log('game over');
+        var elSmiley = document.querySelector('.smiley-container')
+        elSmiley.innerText = WIN
     }
-
 }
 
 
-function setBombsRandomly(board, mines) {
+function setBombsRandomly(board, mines, currI, currJ) {
     for (var i = 0; i < mines; i++) {
         var cell = getEmptyCell(board)
+        if (cell.coords.i === currI && cell.coords.j === currJ) {
+            i--
+            continue
+        }
         cell.isMine = true
+        var elCell = document.querySelector(`[data-i="${cell.coords.i}"][data-j="${cell.coords.j}"]`)
+        elCell.classList.add('hidden-bomb')
     }
 }
 
@@ -207,6 +206,8 @@ function revealAllMines() {
         elCell.classList.remove('hidden-bomb')
         elCell.classList.add('explosion')
     }
+    var elSmiley = document.querySelector('.smiley-container')
+    elSmiley.innerText = LOST
     console.log('boom boom');
 }
 
@@ -271,7 +272,6 @@ function changeLevel(levelStr) {
             };
             break
     }
-    reset()
     initGame()
 }
 
@@ -281,6 +281,24 @@ function reset() {
         isOn: false,
         shownCount: 0,
         markedCount: 0,
-        secsPassed: 0
+        secsPassed: 0,
+        isFirstClick: true,
+        liveCount: 3
     }
+    var elSmiley = document.querySelector('.smiley-container')
+    elSmiley.innerText = NORMAL
+
+    var elLive = document.querySelector('.lives-container')
+    elLive.innerText = LIVE + LIVE + LIVE
+}
+
+function decreaseFife() {
+    gGame.liveCount--
+        var lives = ''
+    for (var i = 0; i < gGame.liveCount; i++) {
+        lives += LIVE
+    }
+    console.log(lives, 'lives');
+    var elLives = document.querySelector('.lives-container')
+    elLives.innerText = lives
 }
