@@ -10,16 +10,30 @@
 </head>
 
 <body onload="initGame()">
-    <div class="stopwatch">0.00</div>
-    <d class="smiley-container" onclick="initGame()">😃</d>
-    <d class="lives-container"></d>
-    <table class="game" border="1" cellpadding="10">
-        <tbody class="board"></tbody>
-    </table>
-    <div class="btn-container"></div>
-    <div class="footer">
-        <p>Guy Elizarov</p>
-    </div>
+
+    <d class="content">
+
+        <div class="stopwatch">0.00</div>
+
+        <d class="smiley-container" onclick="initGame()">😃</d>
+
+        <d class="lives-container"></d>
+
+        <d class="hints-container" onclick="activateHints(this)"></d>
+
+        <table class="game" border="1" cellpadding="10">
+            <tbody class="board"></tbody>
+        </table>
+
+        <d class="high-score-container"></d>
+
+        <div class="btn-container"></div>
+
+        <div class="footer">
+            <p>Guy Elizarov</p>
+        </div>
+    </d>
+
 
     <script src="js/util.js"></script>
     <script src="js/main.js"></script>

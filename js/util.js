@@ -1,6 +1,6 @@
 'use strict'
 
-var gElStopWatch = document.querySelector('.stopwatch') //<div class="stopwatch">0.000</div>
+var gElStopWatch = document.querySelector('.stopwatch')
 var gTimerInterval
 var gStartTime
 
